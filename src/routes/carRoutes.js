@@ -1,17 +1,22 @@
-const routes = (app) => {
-    app.get('/', function(req, res, next) {
-        res.locals.connection.query('SELECT * from Cars', function (error, results, fields) {
-            if (error) throw error;
-            res.send(JSON.stringify({"status": 200, "error": null, "response": results}));
-        });
-    });
-    
-    // .route('/contact')
-    // .get((req, res) => 
-    // res.send('Getting'))
+var carModels = require('./../models/carModels');
+var sellerModel = require('./../models/sellerModel');
+import {getCars} from '../controllers/carController';
 
-//     .post((req, res) => 
-//     res.send('posting'))
+const routes = (app) => {
+    app.route('/cars')
+    .get(getCars);
+
+    // app.get('/cars/:id', function(req, res, next){
+    //     carModels.findOne().then(car =>{
+    //         car.get(req.params.id);
+    //     })
+    // });
+
+    // app.get('/seller/cars', function(req, res, next){
+    //     sellerModel.findAll().then(seller => {
+    //         res.send(seller);
+    //     })
+    // })
 };
 
 export default routes;
