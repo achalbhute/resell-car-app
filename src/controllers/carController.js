@@ -6,6 +6,6 @@ export const getCars =(req, res) => {
         {
             res.send(err);
         }
-        res.json(cars);
+        return res.send(cars);
     })
 }
