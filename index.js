@@ -1,5 +1,5 @@
 import express from 'express';
-import carRoutes from './src/routes/carRoutes';
+import carRouter from './src/routes/carRouter';
 import userRouter from './src/routes/userRouter';
 // import 
 const app = express();
@@ -16,7 +16,7 @@ app.get('/', (req, res) =>
     res.send(`Node and express server is running on port ${PORT}`)
 );
 
-app.use('/cars', carRoutes);
+app.use('/cars', carRouter);
 app.use('/', userRouter);
 ////////////////////////////////////
 /*
