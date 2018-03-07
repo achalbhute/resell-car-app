@@ -1,6 +1,6 @@
 import express from 'express';
 import carRoutes from './src/routes/carRoutes';
-
+import userRouter from './src/routes/userRouter';
 // import 
 const app = express();
 const cookieParser = require('cookie-parser');
@@ -17,7 +17,7 @@ app.get('/', (req, res) =>
 );
 
 app.use('/cars', carRoutes);
-
+app.use('/', userRouter);
 ////////////////////////////////////
 /*
 Todo: car router

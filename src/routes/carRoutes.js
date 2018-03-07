@@ -10,6 +10,7 @@ router.get('/', function(req, res) {
         res.send(cars);
     });
   });
+
   router.get('/available', function(req, res) {
     models.cars.findAll({
         where: {buyer_id: null},
@@ -18,8 +19,6 @@ router.get('/', function(req, res) {
         res.send(cars);
     });
   });
-
-  
 
   router.post('/', function(req, res) {
     models.cars.create({make: req.body.make, model : req.body.model, year : req.body.year, color : req.body.color,
@@ -38,22 +37,12 @@ router.get('/', function(req, res) {
     });
   });
 
-//   router.patch('/:id', function(req, res) {
-//     models.cars.update({make: req.body.make},{where:{ id : req.params.id}})
-//          .then(function() {
-//             res.send('egfg');
-//     });
-//   });
   router.patch('/:id', function(req, res) {
-    models.cars.findOne({
-        where: {id: req.params.id},
-      //include: [ {model:models.users,as:'seller'},{model:models.users,as:'buyer'} ]
-    }).then(function(car) {
-        car.update({make: req.body.make})
+    models.cars.update({"buyer_id": req.body.buyer_id},{where:{ id : req.params.id}})
          .then(function() {
-            res.send('egfg');
+            res.send('successfully updated');
     });
   });
-});
+
  
   module.exports = router;
