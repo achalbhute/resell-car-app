@@ -1,22 +1,59 @@
-var carModels = require('./../models/carModels');
-var sellerModel = require('./../models/sellerModel');
-import {getCars} from '../controllers/carController';
+var models = require('./../models');
 
-const routes = (app) => {
-    app.route('/cars')
-    .get(getCars);
+var express = require('express');
+var router  = express.Router();
 
-    // app.get('/cars/:id', function(req, res, next){
-    //     carModels.findOne().then(car =>{
-    //         car.get(req.params.id);
-    //     })
-    // });
+router.get('/', function(req, res) {
+    models.cars.findAll({
+      include: [ {model:models.users,as:'seller'},{model:models.users,as:'buyer'}]/// buyer is null
+    }).then(function(cars) {
+        res.send(cars);
+    });
+  });
+  router.get('/available', function(req, res) {
+    models.cars.findAll({
+        where: {buyer_id: null},
+      include: [{model:models.users,as:'seller'}] //buyer is not null
+    }).then(function(cars) {
+        res.send(cars);
+    });
+  });
 
-    // app.get('/seller/cars', function(req, res, next){
-    //     sellerModel.findAll().then(seller => {
-    //         res.send(seller);
-    //     })
-    // })
-};
+  
 
-export default routes;
+  router.post('/', function(req, res) {
+    models.cars.create({make: req.body.make, model : req.body.model, year : req.body.year, color : req.body.color,
+         desciption : req.body.desciption,history : req.body.history,seller_id : req.body.seller_id})
+         .then(function() {
+            res.redirect('/');
+    });
+  });
+  
+  router.get('/:id', function(req, res) {
+    models.cars.findOne({
+        where: {id: req.params.id},
+      include: [ {model:models.users,as:'seller'},{model:models.users,as:'buyer'} ]
+    }).then(function(cars) {
+        res.send(cars);
+    });
+  });
+
+//   router.patch('/:id', function(req, res) {
+//     models.cars.update({make: req.body.make},{where:{ id : req.params.id}})
+//          .then(function() {
+//             res.send('egfg');
+//     });
+//   });
+  router.patch('/:id', function(req, res) {
+    models.cars.findOne({
+        where: {id: req.params.id},
+      //include: [ {model:models.users,as:'seller'},{model:models.users,as:'buyer'} ]
+    }).then(function(car) {
+        car.update({make: req.body.make})
+         .then(function() {
+            res.send('egfg');
+    });
+  });
+});
+ 
+  module.exports = router;

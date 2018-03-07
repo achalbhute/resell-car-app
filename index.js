@@ -1,33 +1,26 @@
 import express from 'express';
-import routes from './src/routes/carRoutes';
+import carRoutes from './src/routes/carRoutes';
 
 // import 
 const app = express();
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const PORT = 3000;
-routes(app);
-
-// var mysql = require("mysql");
-// //Database connection
-// app.use(function(req, res, next){
-// 	global.connection = mysql.createConnection({
-// 		host     : 'localhost',
-// 		user     : 'root',
-// 		password : ' ',
-// 		database : 'carsDB'
-// 	});
-// 	connection.connect();
-// 	next();
-// });
-
-// con.connect(function(err){
-//     if(err) throw err;
-//     console.log("Connected");
-// });
-
+app.listen(PORT, () =>
+    console.log(`Your server is running on port ${PORT}`)
+);
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.get('/', (req, res) =>
     res.send(`Node and express server is running on port ${PORT}`)
 );
 
-app.listen(PORT, () =>
-    console.log(`Your server is running on port ${PORT}`)
-);
+app.use('/cars', carRoutes);
+
+////////////////////////////////////
+/*
+Todo: car router
+
+
+*/

@@ -1,4 +1,4 @@
-var carModels = require('./../models/carModels');
+var carModels = require('./../models/car');
 
 export const getCars =(req, res) => {
     carModels.findAll({}, (err, cars) => {
@@ -8,4 +8,4 @@ export const getCars =(req, res) => {
         }
         return res.send(cars);
     })
-}
+};
