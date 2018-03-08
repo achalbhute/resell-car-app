@@ -1,7 +1,8 @@
 import express from 'express';
 import carRouter from './src/routes/carRouter';
 import userRouter from './src/routes/userRouter';
-// import 
+import session from 'express-session';
+
 const app = express();
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -18,9 +19,4 @@ app.get('/', (req, res) =>
 
 app.use('/cars', carRouter);
 app.use('/', userRouter);
-////////////////////////////////////
-/*
-Todo: car router
-
-
-*/
+app.use(session({secret: 'ssshhhhh'}));
