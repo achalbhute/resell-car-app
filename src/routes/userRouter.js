@@ -3,7 +3,7 @@ import models from './../models';
 import session from 'express-session';
 import jwt from 'jsonwebtoken';
 import config from './../config/config';
- import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 var router  = express.Router();
 var sess;
