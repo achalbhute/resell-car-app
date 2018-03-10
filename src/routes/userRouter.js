@@ -16,12 +16,15 @@ router.post('/login', function(req, res) {
         if(user){
             var passwordIsValid = bcrypt.compareSync(req.body.password, user.password);
             if (!passwordIsValid) {
-                return res.status(401).send({ auth: false, token: null })
+                return res.send({ auth: false, token: null })
             };
+            user.password = "";
             var token = jwt.sign({ id: user.id }, config.secret, {
                 expiresIn: 86400 // expires in 24 hours
               });
-              res.json({success:true, token: token});
+              return res.json({success:true, token, user});
+         }else{
+            return res.send({ auth: false, token: null })
          }
         
     });
@@ -30,11 +33,11 @@ router.post('/login', function(req, res) {
   router.get('/me',function(req, res, next){
     var token = req.headers['x-access-token'];
 	if (!token) {
-		return res.status(401).send({ auth: false, message: 'No token provided.' });
+		return res.send({ auth: false, message: 'No token provided.' });
 	}
 	jwt.verify(token, config.secret, function (err, decoded) {
 		if (err) {
-			return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+			return res.send({ auth: false, message: 'Failed to authenticate token.' });
 		}
 		var userID = decoded.id;
 		models.users.findById(userID)

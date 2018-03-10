@@ -9,12 +9,12 @@ function checkAuth(req, res, next) {
 
 	var token = req.headers['x-access-token'];
 	if (!token) {
-		return res.status(401).send({ auth: false, message: 'No token provided.' });
+		return res.send({ auth: false, message: 'No token provided.' });
 	}
 
 	jwt.verify(token, config.secret, function (err, decoded) {
 		if (err) {
-			return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+			return res.send({ auth: false, message: 'Failed to authenticate token.' });
 		}
 		var userID = decoded.id;
 		models.users.findById(userID)
@@ -39,7 +39,7 @@ function checkRole(req, res, role, callback) {
 	if (role_func(res.locals.user.role)) {
 		callback();
 	} else {
-		return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+		return res.send({ auth: false, message: 'Failed to authenticate.' });
 	}
 }
 router.get('/', checkAuth, function (req, res) {
@@ -57,7 +57,7 @@ router.get('/', checkAuth, function (req, res) {
 			return res.json(cars);
 		});
 	}else{
-		return res.status(500).send({ auth: false, message: 'Failed to authenticate.' });
+		return res.send({ auth: false, message: 'Failed to authenticate.' });
 	}
 });
 
@@ -74,7 +74,7 @@ router.post('/', checkAuth, function (req, res) {
 	checkRole(req, res, 'seller', function () {
 	models.cars.create({
 		make: req.body.make, model: req.body.model, year: req.body.year, color: req.body.color,
-		desciption: req.body.desciption, history: req.body.history, seller_id: req.body.seller_id
+		description: req.body.description, history: req.body.history, seller_id: req.body.seller_id
 	})
 		.then(function () {
 			res.json({
