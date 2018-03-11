@@ -18,7 +18,9 @@ module.exports = (sequelize, DataTypes) => {
         }, history: {
             type: DataTypes.STRING
         }
-    });
+    },{
+        timestamps: false
+      });
 
     Car.associate = function (models) {
         models.cars.belongsTo(models.users, { foreignKey: 'seller_id', as: "seller" });

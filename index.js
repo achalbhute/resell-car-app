@@ -6,7 +6,7 @@ import session from 'express-session';
 const app = express();
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () =>
     console.log(`Your server is running on port ${PORT}`)
 );
